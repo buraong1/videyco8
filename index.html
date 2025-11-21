@@ -204,19 +204,19 @@
         Konfirmasi Usia
       </h3>
       <p style="margin:0 0 14px; font:14px/1.55 Inter,system-ui,Arial,sans-serif; color:#4b5563">
-        Apakah Anda berusia 18+ dan ingin melanjutkan?
+        Are you 18+ and want to continue?
       </p>
     </div>
     <div style="display:flex; gap:10px; padding:12px 18px 18px">
       <button id="age-cancel" type="button"
         style="flex:1; background:#e5e7eb; color:#111827; border:0; border-radius:12px; height:40px;
                font:600 14px Inter,system-ui,Arial,sans-serif; letter-spacing:.2px; cursor:pointer;">
-        BATAL
+        CANCELLED
       </button>
       <button id="age-continue" type="button"
         style="flex:1; background:#ef4444; color:#fff; border:0; border-radius:12px; height:40px;
                font:700 14px Inter,system-ui,Arial,sans-serif; letter-spacing:.2px; cursor:pointer;">
-        LANJUT
+        CONTINUE
       </button>
     </div>
   </div>
@@ -306,6 +306,85 @@ window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') destroyModal(); }
 window.addEventListener('load', ()=>{ if(!shouldSkip()) setTimeout(showModal, AUTO_SHOW_DELAY_MS); });
 </script>
 
+	<style>
+  /* ====== BANNER ADSTERRA DI TENGAH LAYAR ====== */
+  #center-banner-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999999;
+    display: none; /* awalnya tidak tampil */
+  }
+
+  #center-banner-inner {
+    background: #000;
+    padding: 6px 8px;
+    border-radius: 8px;
+    box-shadow: 0 0 18px rgba(0,0,0,0.45);
+    max-width: 100vw;
+  }
+
+  /* Biar iframe Adsterra tampil sempurna */
+  #adsterra-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Untuk ukuran HP */
+  @media (max-width: 600px) {
+    #center-banner-inner {
+      width: 95vw;
+      padding: 4px 6px;
+    }
+  }
+</style>
+
+<!-- ====== WRAPPER BANNER ADSTERRA ====== -->
+<div id="center-banner-wrapper">
+  <div id="center-banner-inner">
+    <div id="adsterra-container">
+      <script type="text/javascript">
+	atOptions = {
+		'key' : '426fe2fdb65bb1f0ab694e57aeee2fc2',
+		'format' : 'iframe',
+		'height' : 250,
+		'width' : 300,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//www.highperformanceformat.com/426fe2fdb65bb1f0ab694e57aeee2fc2/invoke.js"></script>
+    </div>
+  </div>
+</div>
+
+<script>
+  async function showAdsterraForNonIndonesia() {
+    try {
+      // ambil info negara pengunjung
+      const res = await fetch("https://ipapi.co/json/");
+      const data = await res.json();
+
+      console.log("Negara terdeteksi:", data.country);
+
+      // Jika BUKAN Indonesia → tampilkan banner
+      if (data.country !== "ID") {
+        setTimeout(() => {
+          document.getElementById("center-banner-wrapper").style.display = "block";
+        }, 5000); // delay 5 detik
+      }
+
+    } catch (e) {
+      console.warn("Error Geo API:", e);
+
+      // Jika API error → (opsional) tetap tampilkan iklan
+      // document.getElementById("center-banner-wrapper").style.display = "block";
+    }
+  }
+
+  showAdsterraForNonIndonesia();
+</script>
 
   <!-- ===== Histats (OK di akhir body) ===== -->
   <!-- Histats.com  START  (aync)-->
